@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, Search, Bell, Settings, FileUp, Plus, MoreHorizontal, X, User } from 'lucide-react';
+import { Menu, Search, Bell, Settings, FileUp, Plus, MoreHorizontal, X, User, Sprout, BarChart3, Droplet, AlertTriangle, Wheat, Map, Leaf, FileText, Upload, Sun, Check, AlertCircle } from 'lucide-react';
 import { mockFields, mockCropBatches, mockStatusHistory, mockIrrigationEvents } from '../data/mockData';
 import {
   countActiveCropBatches,
@@ -12,7 +12,6 @@ import {
 } from '../utils/calculations';
 import JsonImport from '../components/JsonImport';
 import Chart from 'react-apexcharts';
-import { TrendingUp, Droplet, AlertTriangle, BarChart3, FileText } from 'lucide-react';
 
 function Dashboard() {
   const location = useLocation();
@@ -44,7 +43,7 @@ function Dashboard() {
     {
       title: 'Aktiv Məhsul Partiyaları',
       value: activeBatches.toString(),
-      icon: '🌱',
+      icon: Sprout,
       badge: '+2%',
       badgeColor: 'bg-green-500/10 text-green-500',
       glowColor: 'from-green-500/5',
@@ -54,7 +53,7 @@ function Dashboard() {
       title: 'İstifadə Olunan Sahələr',
       value: totalFields.toString(),
       suffix: `/ ${maxFields}`,
-      icon: '📊',
+      icon: BarChart3,
       badge: 'Stabil',
       badgeColor: 'bg-white/5 text-gray-400',
       glowColor: 'from-white/0',
@@ -63,7 +62,7 @@ function Dashboard() {
     {
       title: 'Gecikmiş Suvarma',
       value: overdueCount.toString(),
-      icon: '💧',
+      icon: Droplet,
       badge: 'Diqqət',
       badgeColor: 'bg-red-500/10 text-red-500',
       glowColor: 'from-red-500/5',
@@ -72,7 +71,7 @@ function Dashboard() {
     {
       title: 'Kritik Status Sayı',
       value: criticalCount.toString(),
-      icon: '⚠️',
+      icon: AlertTriangle,
       badge: '+1 Bu gün',
       badgeColor: 'bg-yellow-500/10 text-yellow-500',
       glowColor: 'from-yellow-500/5',
@@ -120,7 +119,7 @@ function Dashboard() {
       return {
         title: `Status: ${status.status === 'healthy' ? 'Sağlam' : status.status === 'risk' ? 'Risk' : status.status === 'sick' ? 'Xəstə' : 'Kritik'}`,
         subtitle: `${field?.name || 'Naməlum'} - ${batch?.cropType || 'Naməlum'}`,
-        icon: status.status === 'healthy' ? '✓' : status.status === 'critical' ? '!' : '⚠',
+        icon: status.status === 'healthy' ? Check : status.status === 'critical' ? AlertCircle : AlertTriangle,
         iconColor: status.status === 'healthy' 
           ? 'bg-green-500/20 text-green-500 border-green-500/50 shadow-[0_0_10px_rgba(70,236,19,0.2)]'
           : status.status === 'critical'
@@ -201,8 +200,8 @@ function Dashboard() {
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 mb-10">
           <Link to="/" className="flex items-center gap-3 flex-1 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black text-2xl">
-              🌾
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black">
+              <Wheat size={24} />
             </div>
             <div className="flex flex-col">
               <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
@@ -227,7 +226,7 @@ function Dashboard() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📊</span>
+            <BarChart3 size={20} />
             <span className="text-sm font-medium">İdarə Paneli</span>
           </Link>
           <Link
@@ -238,7 +237,7 @@ function Dashboard() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🗺️</span>
+            <Map size={20} />
             <span className="text-sm font-medium">Sahələr</span>
           </Link>
           <Link
@@ -249,7 +248,7 @@ function Dashboard() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🌿</span>
+            <Sprout size={20} />
             <span className="text-sm font-medium">Məhsul Partiyaları</span>
           </Link>
           <Link
@@ -260,7 +259,7 @@ function Dashboard() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">💧</span>
+            <Droplet size={20} />
             <span className="text-sm font-medium">Suvarma</span>
             {overdueCount > 0 && (
               <span className="ml-auto bg-red-500/20 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -276,7 +275,7 @@ function Dashboard() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📝</span>
+            <FileText size={20} />
             <span className="text-sm font-medium">Qeydlər</span>
           </Link>
           <Link
@@ -287,7 +286,7 @@ function Dashboard() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📤</span>
+            <Upload size={20} />
             <span className="text-sm font-medium">Məlumat İdxalı</span>
           </Link>
           
@@ -329,7 +328,7 @@ function Dashboard() {
           {/* Weather & Date */}
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2 bg-[#24381e]/50 px-4 py-2 rounded-full border border-white/5">
-              <span className="text-yellow-400">☀️</span>
+              <Sun size={18} className="text-yellow-400" />
               <span className="text-sm font-semibold tracking-tight">Bakı, 24°C</span>
             </div>
             <div className="text-sm text-gray-400 font-medium">{formattedDate}</div>
@@ -358,9 +357,9 @@ function Dashboard() {
                 <div className="text-sm font-bold leading-none">Fermer</div>
                 <div className="text-xs text-[#46ec13] mt-1 leading-none">İstifadəçi</div>
               </Link>
-              <Link to="/profile" className="w-10 h-10 rounded-full bg-[#24381e] border border-white/10 overflow-hidden hover:border-[#46ec13]/50 transition-colors">
-                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center text-xl">
-                  👤
+              <Link to="/profile" className="w-10 h-10 rounded-full bg-[#24381e] border border-white/10 overflow-hidden hover:border-[#46ec13]/50 transition-colors flex items-center justify-center">
+                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center">
+                  <User size={20} />
                 </div>
               </Link>
             </div>
@@ -417,14 +416,15 @@ function Dashboard() {
                 const isCriticalStatus = card.title === 'Kritik Status Sayı';
                 const CardWrapper = isCriticalStatus ? Link : 'div';
                 const wrapperProps = isCriticalStatus ? { to: '/risk-analysis', className: 'block' } : {};
+                const IconComponent = card.icon;
                 
                 return (
                   <CardWrapper key={idx} {...wrapperProps}>
                     <div className={`bg-[#1c2e17] p-6 rounded-2xl border border-white/5 ${card.borderColor} transition-all group relative overflow-hidden ${isCriticalStatus ? 'cursor-pointer hover:border-yellow-500/50 hover:shadow-lg hover:shadow-yellow-500/10' : ''}`}>
                       <div className={`absolute -right-6 -top-6 w-24 h-24 bg-gradient-to-br ${card.glowColor} rounded-full blur-2xl group-hover:opacity-100 transition-all`}></div>
                       <div className="flex items-start justify-between relative z-10">
-                        <div className="p-3 bg-[#24381e] rounded-xl text-3xl">
-                          {card.icon}
+                        <div className="p-3 bg-[#24381e] rounded-xl">
+                          <IconComponent size={24} />
                         </div>
                         <span className={`flex items-center ${card.badgeColor} text-xs font-bold px-2 py-1 rounded-full`}>
                           {card.badge}
@@ -550,27 +550,30 @@ function Dashboard() {
                 <div className="absolute left-[19px] top-2 bottom-4 w-0.5 bg-[#24381e]"></div>
                 <div className="space-y-6">
                   {recentStatusHistory.length > 0 ? (
-                    recentStatusHistory.map((event, idx) => (
-                      <div key={idx} className="relative flex items-start gap-4">
-                        <div className="relative z-10 bg-[#1c2e17] p-1">
-                          <div className={`w-8 h-8 rounded-full ${event.iconColor} flex items-center justify-center border`}>
-                            <span className="text-sm font-bold">{event.icon}</span>
-                          </div>
-                        </div>
-                        <div className="flex-1 bg-[#24381e]/50 p-4 rounded-xl border border-white/5 hover:bg-[#24381e] transition-colors">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <h4 className="font-semibold text-sm">{event.title}</h4>
-                              <p className="text-gray-400 text-xs mt-0.5">{event.subtitle}</p>
-                            </div>
-                            <div className="text-right">
-                              <span className="text-gray-500 text-xs font-medium block">{event.date}</span>
-                              <span className="text-gray-600 text-[10px] block">{event.time}</span>
+                    recentStatusHistory.map((event, idx) => {
+                      const StatusIcon = event.icon;
+                      return (
+                        <div key={idx} className="relative flex items-start gap-4">
+                          <div className="relative z-10 bg-[#1c2e17] p-1">
+                            <div className={`w-8 h-8 rounded-full ${event.iconColor} flex items-center justify-center border`}>
+                              <StatusIcon size={16} />
                             </div>
                           </div>
+                          <div className="flex-1 bg-[#24381e]/50 p-4 rounded-xl border border-white/5 hover:bg-[#24381e] transition-colors">
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <h4 className="font-semibold text-sm">{event.title}</h4>
+                                <p className="text-gray-400 text-xs mt-0.5">{event.subtitle}</p>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-gray-500 text-xs font-medium block">{event.date}</span>
+                                <span className="text-gray-600 text-[10px] block">{event.time}</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    ))
+                      );
+                    })
                   ) : (
                     <div className="text-center text-gray-500 py-8">
                       Status tarixçəsi yoxdur

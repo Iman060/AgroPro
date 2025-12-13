@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Edit, Camera, User, History, Shield, Lock, Laptop, 
-  CheckCircle, AlertTriangle, LogIn, Menu, Settings, X, Bell, Search
+  CheckCircle, AlertTriangle, LogIn, Menu, Settings, X, Bell, Search,
+  Wheat, BarChart3, Map, Sprout, Droplet, FileText, Upload, Sun, Award
 } from 'lucide-react';
 import { mockCropBatches, mockIrrigationEvents } from '../data/mockData';
 import { getActiveCropBatches, countOverdueIrrigation } from '../utils/calculations';
@@ -26,6 +27,7 @@ function ProfilePage() {
 
   const [theme, setTheme] = useState('dark');
   const [twoFactor, setTwoFactor] = useState(false);
+  const [profileImageError, setProfileImageError] = useState(false);
 
   const activeCropBatches = getActiveCropBatches(mockCropBatches);
   const overdueCount = countOverdueIrrigation(activeCropBatches, mockIrrigationEvents);
@@ -34,6 +36,10 @@ function ProfilePage() {
   const currentDate = new Date();
   const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
   const formattedDate = currentDate.toLocaleDateString('az-AZ', dateOptions);
+
+  // Random profile image based on user name for consistency
+  const profileImageSeed = formData.fullName.toLowerCase().replace(/\s+/g, '');
+  const profileImageUrl = `https://i.pravatar.cc/300?img=${profileImageSeed.length % 70}`;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,8 +63,8 @@ function ProfilePage() {
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 mb-10">
           <Link to="/" className="flex items-center gap-3 flex-1 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black text-2xl">
-              🌾
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black">
+              <Wheat size={24} />
             </div>
             <div className="flex flex-col">
               <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
@@ -83,7 +89,7 @@ function ProfilePage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📊</span>
+            <BarChart3 size={20} />
             <span className="text-sm font-medium">İdarə Paneli</span>
           </Link>
           <Link
@@ -94,7 +100,7 @@ function ProfilePage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🗺️</span>
+            <Map size={20} />
             <span className="text-sm font-medium">Sahələr</span>
           </Link>
           <Link
@@ -105,7 +111,7 @@ function ProfilePage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🌿</span>
+            <Sprout size={20} />
             <span className="text-sm font-medium">Məhsul Partiyaları</span>
           </Link>
           <Link
@@ -116,7 +122,7 @@ function ProfilePage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">💧</span>
+            <Droplet size={20} />
             <span className="text-sm font-medium">Suvarma</span>
             {overdueCount > 0 && (
               <span className="ml-auto bg-red-500/20 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -132,7 +138,7 @@ function ProfilePage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📝</span>
+            <FileText size={20} />
             <span className="text-sm font-medium">Qeydlər</span>
           </Link>
           <Link
@@ -143,7 +149,7 @@ function ProfilePage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📤</span>
+            <Upload size={20} />
             <span className="text-sm font-medium">Məlumat İdxalı</span>
           </Link>
           
@@ -185,7 +191,7 @@ function ProfilePage() {
           {/* Weather & Date */}
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2 bg-[#24381e]/50 px-4 py-2 rounded-full border border-white/5">
-              <span className="text-yellow-400">☀️</span>
+              <Sun size={18} className="text-yellow-400" />
               <span className="text-sm font-semibold tracking-tight">Bakı, 24°C</span>
             </div>
             <div className="text-sm text-gray-400 font-medium">{formattedDate}</div>
@@ -214,10 +220,19 @@ function ProfilePage() {
                 <div className="text-sm font-bold leading-none">Fermer</div>
                 <div className="text-xs text-[#46ec13] mt-1 leading-none">İstifadəçi</div>
               </Link>
-              <Link to="/profile" className="w-10 h-10 rounded-full bg-[#24381e] border border-white/10 overflow-hidden hover:border-[#46ec13]/50 transition-colors">
-                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center text-xl">
-                  👤
-                </div>
+              <Link to="/profile" className="w-10 h-10 rounded-full bg-[#24381e] border border-white/10 overflow-hidden hover:border-[#46ec13]/50 transition-colors flex items-center justify-center">
+                {!profileImageError ? (
+                  <img 
+                    src={profileImageUrl} 
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                    onError={() => setProfileImageError(true)}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center">
+                    <User size={20} />
+                  </div>
+                )}
               </Link>
             </div>
           </div>
@@ -237,8 +252,17 @@ function ProfilePage() {
               <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
                 <div className="flex items-center gap-5">
                   <div className="relative">
-                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-[#142210] shadow-xl bg-[#24381e] flex items-center justify-center text-4xl">
-                      👤
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-[#142210] shadow-xl bg-[#24381e] overflow-hidden flex items-center justify-center">
+                      {!profileImageError ? (
+                        <img 
+                          src={profileImageUrl} 
+                          alt={formData.fullName}
+                          className="w-full h-full object-cover"
+                          onError={() => setProfileImageError(true)}
+                        />
+                      ) : (
+                        <User size={40} />
+                      )}
                     </div>
                     <div className="absolute bottom-1 right-1 w-5 h-5 bg-[#46ec13] rounded-full border-4 border-[#142210]" title="Aktiv"></div>
                   </div>
@@ -464,12 +488,12 @@ function ProfilePage() {
                 {/* System Role */}
                 <div className="bg-gradient-to-br from-[#1c2e17] to-[#142210] rounded-2xl border border-white/5 p-6 shadow-sm relative overflow-hidden group">
                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <span className="text-6xl text-[#46ec13]">🎖️</span>
+                    <Award size={48} className="text-[#46ec13]" />
                   </div>
                   <h3 className="text-lg font-bold mb-4">Sistem Rolu</h3>
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-[#46ec13]/20 text-[#46ec13] p-2 rounded-lg text-2xl">
-                      🌾
+                    <div className="bg-[#46ec13]/20 text-[#46ec13] p-2 rounded-lg">
+                      <Wheat size={24} />
                     </div>
                     <div>
                       <p className="font-bold">Aqronom</p>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Mail, Phone, MapPin, Send, MessageCircle, Clock } from 'lucide-react';
+import { Menu, X, Mail, Phone, MapPin, Send, MessageCircle, Clock, Wheat } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 import { emailjsConfig } from '../config/emailjs';
@@ -72,7 +72,7 @@ export default function ContactPage() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
-              <div className="text-green-500 text-3xl">🌾</div>
+              <Wheat size={32} className="text-green-500" />
               <h2 className="text-lg font-bold tracking-tight">AgroPro</h2>
             </Link>
 
@@ -350,7 +350,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">🌾</span>
+                <Wheat size={24} />
                 <span className="font-bold text-xl">AgroPro</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">

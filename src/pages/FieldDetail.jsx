@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
-import { Menu, Search, Bell, Settings, Edit, Plus, MoreVertical, ChevronRight, TrendingUp, Archive, Clock, X, User } from 'lucide-react';
+import { Menu, Search, Bell, Settings, Edit, Plus, MoreVertical, ChevronRight, TrendingUp, Archive, Clock, X, User, MapPin, Wheat, Sun, Droplet, Sprout, BarChart3, Map, FileText, Upload } from 'lucide-react';
 import { mockFields, mockCropBatches, mockStatusHistory, mockIrrigationEvents, mockNotes } from '../data/mockData';
 import { getActiveCropBatchesForField, getCurrentStatus, getIrrigationState, getActiveFields, getActiveCropBatches, countOverdueIrrigation } from '../utils/calculations';
 import JsonImport from '../components/JsonImport';
@@ -73,7 +73,7 @@ function FieldDetail() {
       label: 'Ümumi Sahə',
       value: `${totalArea} ha`,
       subtext: 'Dəyişiklik yoxdur',
-      icon: '🏞️',
+      icon: MapPin,
       iconColor: 'text-[#46ec13]'
     },
     {
@@ -83,14 +83,14 @@ function FieldDetail() {
       subtext: 'Verimlilik +2%',
       subtextIcon: <TrendingUp size={16} />,
       subtextColor: 'text-[#46ec13]',
-      icon: '🌾',
+      icon: Wheat,
       iconColor: 'text-[#bcaaa4]'
     },
     {
       label: 'Hava Proqnozu',
       value: '24°C',
       subtext: 'Aydın günəşli, külək 5 km/s',
-      icon: '☀️',
+      icon: Sun,
       iconColor: 'text-yellow-400'
     },
     {
@@ -99,7 +99,7 @@ function FieldDetail() {
       subtext: nextIrrigation 
         ? `Növbəti: ${new Date(nextIrrigation.plannedDate).toLocaleDateString('az-AZ', { day: 'numeric', month: 'long' })}`
         : 'Planlaşdırılmamış',
-      icon: '💧',
+      icon: Droplet,
       iconColor: 'text-blue-400'
     }
   ];
@@ -152,7 +152,7 @@ function FieldDetail() {
       id: batch.id,
       name: `${batch.cropType} (${new Date(batch.plantedDate).getFullYear()} Mövsümü)`,
       date: `Yığım tarixi: ${harvestDate.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })}`,
-      icon: '🌾'
+      icon: Wheat
     };
   });
 
@@ -166,7 +166,7 @@ function FieldDetail() {
         description: s.reason,
         date: new Date(s.date),
         user: s.changedBy === 'farmer' ? 'Fermer' : s.changedBy === 'system' ? 'Sistem' : 'İdxal',
-        userAvatar: s.changedBy === 'system' ? 'S' : '👨‍🌾',
+        userAvatar: s.changedBy === 'system' ? 'S' : <User size={16} />,
         isSystem: s.changedBy === 'system'
       })),
     ...mockIrrigationEvents
@@ -177,7 +177,7 @@ function FieldDetail() {
         description: `Sahə ${field.name} - Suvarma uğurla həyata keçirildi`,
         date: new Date(e.executedDate),
         user: 'Fermer',
-        userAvatar: '💧',
+        userAvatar: <Droplet size={16} />,
         isSystem: false
       })),
     ...mockNotes
@@ -188,7 +188,7 @@ function FieldDetail() {
         description: n.text,
         date: new Date(n.date),
         user: 'Fermer',
-        userAvatar: '📝',
+        userAvatar: <FileText size={16} />,
         isSystem: false
       }))
   ]
@@ -249,8 +249,8 @@ function FieldDetail() {
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 mb-10">
           <Link to="/" className="flex items-center gap-3 flex-1 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black text-2xl">
-              🌾
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black">
+              <Wheat size={24} />
             </div>
             <div className="flex flex-col">
               <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
@@ -275,7 +275,7 @@ function FieldDetail() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📊</span>
+            <BarChart3 size={20} />
             <span className="text-sm font-medium">İdarə Paneli</span>
           </Link>
           <button
@@ -285,7 +285,7 @@ function FieldDetail() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🗺️</span>
+            <Map size={20} />
             <span className="text-sm font-medium">Sahələr</span>
           </button>
           
@@ -315,7 +315,7 @@ function FieldDetail() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🌿</span>
+            <Sprout size={20} />
             <span className="text-sm font-medium">Məhsul Partiyaları</span>
           </Link>
           <Link
@@ -326,7 +326,7 @@ function FieldDetail() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">💧</span>
+            <Droplet size={20} />
             <span className="text-sm font-medium">Suvarma</span>
             {overdueCount > 0 && (
               <span className="ml-auto bg-red-500/20 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -342,7 +342,7 @@ function FieldDetail() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📝</span>
+            <FileText size={20} />
             <span className="text-sm font-medium">Qeydlər</span>
           </Link>
           <Link
@@ -353,7 +353,7 @@ function FieldDetail() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📤</span>
+            <Upload size={20} />
             <span className="text-sm font-medium">Məlumat İdxalı</span>
           </Link>
           
@@ -395,7 +395,7 @@ function FieldDetail() {
           {/* Weather & Date */}
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2 bg-[#24381e]/50 px-4 py-2 rounded-full border border-white/5">
-              <span className="text-yellow-400">☀️</span>
+              <Sun size={18} className="text-yellow-400" />
               <span className="text-sm font-semibold tracking-tight">Bakı, 24°C</span>
             </div>
             <div className="text-sm text-gray-400 font-medium">{formattedDate}</div>
@@ -427,8 +427,8 @@ function FieldDetail() {
                 <div className="text-xs text-[#46ec13] mt-1 leading-none">İstifadəçi</div>
               </Link>
               <Link to="/profile" className="w-10 h-10 rounded-full bg-[#24381e] border border-white/10 overflow-hidden hover:border-[#46ec13]/50 transition-colors">
-                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center text-xl">
-                  👤
+                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center">
+                  <User size={20} />
                 </div>
               </Link>
             </div>
@@ -485,7 +485,7 @@ function FieldDetail() {
                 <div key={idx} className="flex flex-col gap-1 rounded-2xl p-6 bg-[#1c2e17] border border-white/5">
                   <div className="flex items-center justify-between">
                     <p className="text-[#a3b99d] text-sm font-medium">{stat.label}</p>
-                    <span className={`text-2xl ${stat.iconColor}`}>{stat.icon}</span>
+                    {stat.icon && <stat.icon size={24} className={stat.iconColor} />}
                   </div>
                   <p className="text-white text-2xl font-bold mt-1">
                     {stat.value}
@@ -507,7 +507,7 @@ function FieldDetail() {
                 <section className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-white text-xl font-bold flex items-center gap-2">
-                      <span className="text-[#46ec13] text-2xl">🌿</span>
+                      <Sprout size={24} className="text-[#46ec13]" />
                       Cari Məhsullar
                     </h3>
                     <Link to="/fields" className="text-sm text-[#46ec13] font-bold hover:underline">
@@ -613,8 +613,8 @@ function FieldDetail() {
                           className="flex items-center justify-between p-4 rounded-lg bg-[#1a241b] border border-[#2c3928]/50 hover:bg-[#233025] transition-colors cursor-pointer"
                         >
                           <div className="flex items-center gap-4">
-                            <div className="h-10 w-10 rounded bg-[#2c3928] flex items-center justify-center text-2xl">
-                              {crop.icon}
+                            <div className="h-10 w-10 rounded bg-[#2c3928] flex items-center justify-center">
+                              {crop.icon && <crop.icon size={20} />}
                             </div>
                             <div>
                               <p className="text-gray-300 font-medium">{crop.name}</p>
@@ -665,11 +665,11 @@ function FieldDetail() {
                             <div className="flex items-center gap-2">
                               {event.isSystem ? (
                                 <div className="h-6 w-6 rounded-full bg-blue-900 flex items-center justify-center text-[10px] text-white font-bold">
-                                  {event.userAvatar}
+                                  {typeof event.userAvatar === 'string' ? event.userAvatar : event.userAvatar}
                                 </div>
                               ) : (
-                                <div className="h-6 w-6 rounded-full bg-[#2c3928] flex items-center justify-center text-sm">
-                                  {event.userAvatar}
+                                <div className="h-6 w-6 rounded-full bg-[#2c3928] flex items-center justify-center">
+                                  {typeof event.userAvatar === 'string' ? event.userAvatar : event.userAvatar}
                                 </div>
                               )}
                               <span className="text-xs text-[#a3b99d]">{event.user}</span>

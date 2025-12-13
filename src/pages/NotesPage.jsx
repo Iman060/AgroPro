@@ -3,7 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   Plus, Search, Droplet, Wind, AlertTriangle, Eye, Calendar,
   ChevronDown, History, X, ThumbsUp, Reply, Send, Save,
-  Bold, Italic, List, Image, Link2, Settings, Menu, Bell, User
+  Bold, Italic, List, Image, Link2, Settings, Menu, Bell, User,
+  Wheat, Sprout, BarChart3, Map, FileText, Upload, Sun, UserCircle
 } from 'lucide-react';
 import { mockCropBatches, mockIrrigationEvents } from '../data/mockData';
 import { getActiveCropBatches, countOverdueIrrigation } from '../utils/calculations';
@@ -99,8 +100,8 @@ export default function NotesPage() {
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 mb-10">
           <Link to="/" className="flex items-center gap-3 flex-1 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black text-2xl">
-              🌾
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black">
+              <Wheat size={24} />
             </div>
             <div className="flex flex-col">
               <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
@@ -125,7 +126,7 @@ export default function NotesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📊</span>
+            <BarChart3 size={20} />
             <span className="text-sm font-medium">İdarə Paneli</span>
           </Link>
           <Link
@@ -136,7 +137,7 @@ export default function NotesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🗺️</span>
+            <Map size={20} />
             <span className="text-sm font-medium">Sahələr</span>
           </Link>
           <Link
@@ -147,7 +148,7 @@ export default function NotesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🌿</span>
+            <Sprout size={20} />
             <span className="text-sm font-medium">Məhsul Partiyaları</span>
           </Link>
           <Link
@@ -158,7 +159,7 @@ export default function NotesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">💧</span>
+            <Droplet size={20} />
             <span className="text-sm font-medium">Suvarma</span>
             {overdueCount > 0 && (
               <span className="ml-auto bg-red-500/20 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -174,7 +175,7 @@ export default function NotesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📝</span>
+            <FileText size={20} />
             <span className="text-sm font-medium">Qeydlər</span>
           </Link>
           <Link
@@ -185,7 +186,7 @@ export default function NotesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📤</span>
+            <Upload size={20} />
             <span className="text-sm font-medium">Məlumat İdxalı</span>
           </Link>
           
@@ -227,7 +228,7 @@ export default function NotesPage() {
           {/* Weather & Date */}
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2 bg-[#24381e]/50 px-4 py-2 rounded-full border border-white/5">
-              <span className="text-yellow-400">☀️</span>
+              <Sun size={18} className="text-yellow-400" />
               <span className="text-sm font-semibold tracking-tight">Bakı, 24°C</span>
             </div>
             <div className="text-sm text-gray-400 font-medium">{formattedDate}</div>
@@ -257,8 +258,8 @@ export default function NotesPage() {
                 <div className="text-xs text-[#46ec13] mt-1 leading-none">İstifadəçi</div>
               </Link>
               <Link to="/profile" className="w-10 h-10 rounded-full bg-[#24381e] border border-white/10 overflow-hidden hover:border-[#46ec13]/50 transition-colors">
-                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center text-xl">
-                  👤
+                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center">
+                  <User size={20} />
                 </div>
               </Link>
             </div>
@@ -419,7 +420,7 @@ export default function NotesPage() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between flex-wrap gap-2">
                         <h4 className="text-[#46ec13] font-bold text-base flex items-center gap-2">
-                          🧑‍🌾 Fermer Müşahidəsi
+                          <UserCircle size={20} className="inline mr-1" /> Fermer Müşahidəsi
                         </h4>
                         <span className="text-[10px] font-bold bg-[#46ec13]/10 text-[#46ec13] px-2 py-1 rounded-full border border-[#46ec13]/20">
                           Aktiv Bildiriş

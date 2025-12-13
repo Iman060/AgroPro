@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Plus, History, Calendar, Droplet, TrendingUp, AlertTriangle, 
-  Search, Menu, Bell, Settings, Archive, MoreVertical, Check, X, User
+  Search, Menu, Bell, Settings, Archive, MoreVertical, Check, X, User,
+  Wheat, Sprout, BarChart3, Map, FileText, Upload, Sun
 } from 'lucide-react';
 import { mockIrrigationEvents, mockCropBatches, mockFields } from '../data/mockData';
 import { getActiveCropBatches, getActiveFields, getIrrigationDelayLevel, countOverdueIrrigation } from '../utils/calculations';
@@ -117,13 +118,13 @@ function IrrigationPage() {
         timeText = execDate.toLocaleDateString('az-AZ', { day: 'numeric', month: 'short' }) + ', ' + execDate.toLocaleTimeString('az-AZ', { hour: '2-digit', minute: '2-digit' });
       }
 
-      // Crop icons
+      // Crop icons - using React components
       const cropIcons = {
-        'Wheat': '🌾',
-        'Corn': '🌽',
-        'Soybeans': '🌱',
-        'Barley': '🌾',
-        'Oats': '🌾',
+        'Wheat': Wheat,
+        'Corn': Wheat, // Using Wheat as placeholder
+        'Soybeans': Sprout,
+        'Barley': Wheat,
+        'Oats': Wheat,
       };
 
       return {
@@ -134,7 +135,7 @@ function IrrigationPage() {
         statusLabel,
         time: timeText,
         volume: '1,500 L', // Mock volume
-        image: cropIcons[batch.cropType] || '🌾',
+        image: cropIcons[batch.cropType] || Wheat,
         event
       };
     })
@@ -224,8 +225,8 @@ function IrrigationPage() {
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 mb-10">
           <Link to="/" className="flex items-center gap-3 flex-1 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black text-2xl">
-              🌾
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black">
+              <Wheat size={24} />
             </div>
             <div className="flex flex-col">
               <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
@@ -250,7 +251,7 @@ function IrrigationPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📊</span>
+            <BarChart3 size={20} />
             <span className="text-sm font-medium">İdarə Paneli</span>
           </Link>
           <Link
@@ -261,7 +262,7 @@ function IrrigationPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🗺️</span>
+            <Map size={20} />
             <span className="text-sm font-medium">Sahələr</span>
           </Link>
           <Link
@@ -272,7 +273,7 @@ function IrrigationPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🌿</span>
+            <Sprout size={20} />
             <span className="text-sm font-medium">Məhsul Partiyaları</span>
           </Link>
           <Link
@@ -283,7 +284,7 @@ function IrrigationPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">💧</span>
+            <Droplet size={20} />
             <span className="text-sm font-medium">Suvarma</span>
             {overdueCount > 0 && (
               <span className="ml-auto bg-red-500/20 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -299,7 +300,7 @@ function IrrigationPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📝</span>
+            <FileText size={20} />
             <span className="text-sm font-medium">Qeydlər</span>
           </Link>
           <Link
@@ -310,7 +311,7 @@ function IrrigationPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📤</span>
+            <Upload size={20} />
             <span className="text-sm font-medium">Məlumat İdxalı</span>
           </Link>
           
@@ -352,7 +353,7 @@ function IrrigationPage() {
           {/* Weather & Date */}
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2 bg-[#24381e]/50 px-4 py-2 rounded-full border border-white/5">
-              <span className="text-yellow-400">☀️</span>
+              <Sun size={18} className="text-yellow-400" />
               <span className="text-sm font-semibold tracking-tight">Bakı, 24°C</span>
             </div>
             <div className="text-sm text-gray-400 font-medium">{formattedDate}</div>
@@ -382,8 +383,8 @@ function IrrigationPage() {
                 <div className="text-xs text-[#46ec13] mt-1 leading-none">İstifadəçi</div>
               </Link>
               <Link to="/profile" className="w-10 h-10 rounded-full bg-[#24381e] border border-white/10 overflow-hidden hover:border-[#46ec13]/50 transition-colors">
-                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center text-xl">
-                  👤
+                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center">
+                  <User size={20} />
                 </div>
               </Link>
             </div>
@@ -566,7 +567,7 @@ function IrrigationPage() {
                           <td className="px-6 py-4 font-medium text-white">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded bg-[#24381e] flex items-center justify-center text-lg border border-white/5">
-                                {event.image}
+                                {event.image && <event.image size={20} />}
                               </div>
                               {event.field}
                             </div>

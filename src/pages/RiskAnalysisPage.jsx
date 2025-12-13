@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Menu, Search, Bell, HelpCircle, AlertTriangle, TrendingUp,
-  CloudRain, Sun, User, Activity, CheckCircle, X, AlertCircle
+  CloudRain, Sun, User, Activity, CheckCircle, X, AlertCircle,
+  Wheat, Sprout, BarChart3, Map, Droplet, FileText, Upload, Check, MapPin, Snowflake, MessageCircle
 } from 'lucide-react';
 import { mockCropBatches, mockIrrigationEvents } from '../data/mockData';
 import { getActiveCropBatches, countOverdueIrrigation } from '../utils/calculations';
@@ -16,7 +17,7 @@ const kpiCards = [
     borderColor: 'border-red-500/30',
     trend: '+20% keçən həftəyə görə',
     trendColor: 'text-red-400',
-    bgIcon: '⚠️',
+    bgIcon: AlertTriangle,
     glowColor: 'from-red-500/5'
   },
   {
@@ -27,7 +28,7 @@ const kpiCards = [
     borderColor: 'border-yellow-500/30',
     trend: 'Yeni qasırğa xəbərdarlığı',
     trendColor: 'text-gray-400',
-    bgIcon: '⛈️',
+    bgIcon: CloudRain,
     glowColor: 'from-yellow-500/5'
   },
   {
@@ -38,7 +39,7 @@ const kpiCards = [
     borderColor: 'border-slate-800',
     trend: 'Təcili baxılmalı',
     trendColor: 'text-green-500',
-    bgIcon: '💬',
+    bgIcon: MessageCircle,
     glowColor: 'from-white/0'
   },
   {
@@ -49,7 +50,7 @@ const kpiCards = [
     borderColor: 'border-red-500',
     trend: 'Rəhbərliyə bildirilib',
     trendColor: 'text-red-300',
-    bgIcon: '🔔',
+    bgIcon: Bell,
     special: true,
     glowColor: 'from-red-500/10'
   }
@@ -71,7 +72,7 @@ const alerts = [
     date: '15.05.2024 - 08:30',
     action: 'Dərhal pestisid çiləmə əməliyyatına başlayın və təsir zonasını izolyasiya edin. Bu xəbərdarlığa 4 saat ərzində cavab verilməyib.',
     status: 'escalated',
-    icon: '📍',
+    icon: MapPin,
     statusText: 'Təsdiqlənməyib'
   },
   {
@@ -81,7 +82,7 @@ const alerts = [
     date: '16.05.2024 - 14:15',
     action: 'Sahəni termal örtüklərlə qoruyun və istilik sistemlərini aktivləşdirin.',
     status: 'acknowledged',
-    icon: '❄️',
+    icon: Snowflake,
     statusText: 'Oxunub'
   },
   {
@@ -91,7 +92,7 @@ const alerts = [
     date: '14.05.2024 - 09:00',
     action: 'Əlavə suvarma həyata keçirildi.',
     status: 'completed',
-    icon: '✓',
+    icon: Check,
     statusText: 'Tamamlanıb'
   }
 ];
@@ -122,8 +123,8 @@ export default function RiskAnalysisPage() {
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 mb-10">
           <Link to="/" className="flex items-center gap-3 flex-1 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black text-2xl">
-              🌾
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black">
+              <Wheat size={24} />
             </div>
             <div className="flex flex-col">
               <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
@@ -148,7 +149,7 @@ export default function RiskAnalysisPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📊</span>
+            <BarChart3 size={20} />
             <span className="text-sm font-medium">İdarə Paneli</span>
           </Link>
           <Link
@@ -159,7 +160,7 @@ export default function RiskAnalysisPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🗺️</span>
+            <Map size={20} />
             <span className="text-sm font-medium">Sahələr</span>
           </Link>
           <Link
@@ -170,7 +171,7 @@ export default function RiskAnalysisPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🌿</span>
+            <Sprout size={20} />
             <span className="text-sm font-medium">Məhsul Partiyaları</span>
           </Link>
           <Link
@@ -181,7 +182,7 @@ export default function RiskAnalysisPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">💧</span>
+            <Droplet size={20} />
             <span className="text-sm font-medium">Suvarma</span>
             {overdueCount > 0 && (
               <span className="ml-auto bg-red-500/20 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -197,7 +198,7 @@ export default function RiskAnalysisPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📝</span>
+            <FileText size={20} />
             <span className="text-sm font-medium">Qeydlər</span>
           </Link>
           <Link
@@ -208,7 +209,7 @@ export default function RiskAnalysisPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📤</span>
+            <Upload size={20} />
             <span className="text-sm font-medium">Məlumat İdxalı</span>
           </Link>
           
@@ -250,7 +251,7 @@ export default function RiskAnalysisPage() {
           {/* Weather & Date */}
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2 bg-[#24381e]/50 px-4 py-2 rounded-full border border-white/5">
-              <span className="text-yellow-400">☀️</span>
+              <Sun size={18} className="text-yellow-400" />
               <span className="text-sm font-semibold tracking-tight">Bakı, 24°C</span>
             </div>
             <div className="text-sm text-gray-400 font-medium">{formattedDate}</div>
@@ -285,8 +286,8 @@ export default function RiskAnalysisPage() {
                 <div className="text-xs text-[#46ec13] mt-1 leading-none">İstifadəçi</div>
               </Link>
               <Link to="/profile" className="w-10 h-10 rounded-full bg-[#24381e] border border-white/10 overflow-hidden hover:border-[#46ec13]/50 transition-colors">
-                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center text-xl">
-                  👤
+                <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center">
+                  <User size={20} />
                 </div>
               </Link>
             </div>
@@ -323,7 +324,7 @@ export default function RiskAnalysisPage() {
                       <div className="absolute top-3 right-3 w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
                     )}
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-6xl">
-                      {card.bgIcon}
+                      {card.bgIcon && <card.bgIcon size={48} className="opacity-10" />}
                     </div>
                     <div className="flex items-start justify-between relative z-10 mb-4">
                       <div className="p-3 bg-[#24381e] rounded-xl">
@@ -515,7 +516,7 @@ export default function RiskAnalysisPage() {
                         alert.status === 'acknowledged' ? 'bg-yellow-900/20 border border-yellow-500/50' :
                         'bg-[#142210] border border-white/5'
                       }`}>
-                        {alert.icon}
+                        {alert.icon && <alert.icon size={20} />}
                       </div>
                       <div className="flex flex-col gap-1">
                         <h3 className="text-lg font-bold">{alert.field}</h3>

@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
+import { Check, Circle } from 'lucide-react';
 import { mockCropBatches, mockStatusHistory, mockIrrigationEvents, mockNotes, mockFields } from '../data/mockData';
 import {
   getCurrentStatus,
@@ -253,7 +254,7 @@ function CropBatchDetail() {
                 >
                 <div className="flex justify-between items-center">
                   <span className={`font-semibold ${event.executedDate ? 'text-green-700 dark:text-green-300' : 'text-yellow-700 dark:text-yellow-300'}`}>
-                    {event.executedDate ? '✓ Həyata keçirilmiş' : '○ Planlaşdırılmış'}
+                    {event.executedDate ? <><Check size={16} className="inline mr-1" /> Həyata keçirilmiş</> : <><Circle size={16} className="inline mr-1" /> Planlaşdırılmış</>}
                   </span>
                   <span className="text-sm text-gray-600 dark:text-gray-400">
                     {event.executedDate 

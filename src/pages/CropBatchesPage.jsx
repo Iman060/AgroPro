@@ -3,7 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Plus, Search, Filter, List, TrendingUp, MapPin, ShoppingBag, 
   AlertTriangle, ChevronRight, Calendar, CheckCircle, Clock,
-  Droplet, FileText, Archive, History, Settings, Menu, X, Bell, User
+  Droplet, FileText, Archive, History, Settings, Menu, X, Bell, User,
+  Wheat, Sprout, BarChart3, Map, Upload, Sun
 } from 'lucide-react';
 import { mockCropBatches, mockFields, mockStatusHistory, mockIrrigationEvents, mockNotes } from '../data/mockData';
 import { getActiveCropBatches, getCurrentStatus, getActiveFields, countOverdueIrrigation } from '../utils/calculations';
@@ -105,20 +106,20 @@ function CropBatchesPage() {
 
     const statusInfo = statusLabels[status] || statusLabels.healthy;
 
-    // Crop icons
-    const cropIcons = {
-      'Wheat': '🌾',
-      'Corn': '🌽',
-      'Soybeans': '🌱',
-      'Barley': '🌾',
-      'Oats': '🌾',
-    };
+      // Crop icons - using React components
+      const cropIcons = {
+        'Wheat': Wheat,
+        'Corn': Wheat, // Using Wheat as placeholder
+        'Soybeans': Sprout,
+        'Barley': Wheat,
+        'Oats': Wheat,
+      };
 
     return {
       id: batch.id,
       crop: batch.cropType,
       field: field?.name || 'Naməlum',
-      icon: cropIcons[batch.cropType] || '🌾',
+      icon: cropIcons[batch.cropType] || Wheat,
       color: 'yellow',
       plantDate: plantedDate.toLocaleDateString('az-AZ', { day: '2-digit', month: '2-digit', year: 'numeric' }),
       status: statusInfo.label,
@@ -263,8 +264,8 @@ function CropBatchesPage() {
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 mb-10">
           <Link to="/" className="flex items-center gap-3 flex-1 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black text-2xl">
-              🌾
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#46ec13] to-green-800 flex items-center justify-center text-black">
+              <Wheat size={24} />
             </div>
             <div className="flex flex-col">
               <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
@@ -289,7 +290,7 @@ function CropBatchesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📊</span>
+            <BarChart3 size={20} />
             <span className="text-sm font-medium">İdarə Paneli</span>
           </Link>
           <Link
@@ -300,7 +301,7 @@ function CropBatchesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🗺️</span>
+            <Map size={20} />
             <span className="text-sm font-medium">Sahələr</span>
           </Link>
           <Link
@@ -311,7 +312,7 @@ function CropBatchesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">🌿</span>
+            <Sprout size={20} />
             <span className="text-sm font-medium">Məhsul Partiyaları</span>
           </Link>
           <Link
@@ -322,7 +323,7 @@ function CropBatchesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">💧</span>
+            <Droplet size={20} />
             <span className="text-sm font-medium">Suvarma</span>
             {overdueCount > 0 && (
               <span className="ml-auto bg-red-500/20 text-red-500 text-[10px] font-bold px-2 py-0.5 rounded-full">
@@ -338,7 +339,7 @@ function CropBatchesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📝</span>
+            <FileText size={20} />
             <span className="text-sm font-medium">Qeydlər</span>
           </Link>
           <Link
@@ -349,7 +350,7 @@ function CropBatchesPage() {
                 : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
             }`}
           >
-            <span className="text-xl">📤</span>
+            <Upload size={20} />
             <span className="text-sm font-medium">Məlumat İdxalı</span>
           </Link>
           
@@ -391,7 +392,7 @@ function CropBatchesPage() {
           {/* Weather & Date */}
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2 bg-[#24381e]/50 px-4 py-2 rounded-full border border-white/5">
-              <span className="text-yellow-400">☀️</span>
+              <Sun size={18} className="text-yellow-400" />
               <span className="text-sm font-semibold tracking-tight">Bakı, 24°C</span>
             </div>
             <div className="text-sm text-gray-400 font-medium">{formattedDate}</div>
@@ -422,7 +423,7 @@ function CropBatchesPage() {
               </Link>
               <Link to="/profile" className="w-10 h-10 rounded-full bg-[#24381e] border border-white/10 overflow-hidden hover:border-[#46ec13]/50 transition-colors">
                 <div className="w-full h-full bg-gradient-to-br from-[#46ec13]/20 to-green-800/20 flex items-center justify-center text-xl">
-                  👤
+                  <User size={20} />
                 </div>
               </Link>
             </div>
@@ -448,7 +449,7 @@ function CropBatchesPage() {
             <div className="bg-[#1c2e17] border border-white/5 rounded-2xl p-6 hover:border-[#46ec13]/30 transition-all group relative overflow-hidden">
               <div className="flex justify-between items-start">
                 <p className="text-gray-400 font-medium text-sm">Aktiv Partiyalar</p>
-                <span className="text-green-500 text-2xl">🌱</span>
+                <Sprout size={24} className="text-green-500" />
               </div>
               <div className="flex items-end gap-2 mt-2">
                 <p className="text-3xl font-bold">{activeBatchesCount}</p>
@@ -567,7 +568,7 @@ function CropBatchesPage() {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded bg-yellow-500/20 text-yellow-500 flex items-center justify-center border border-yellow-500/20 text-lg">
-                                {batch.icon}
+                                {batch.icon && <batch.icon size={20} />}
                               </div>
                               <div>
                                 <p className="text-white text-sm font-semibold">{batch.crop}</p>

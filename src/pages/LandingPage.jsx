@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ArrowRight, Check, TrendingUp, Clock, Radar, BarChart3, Eye, Lock, Database, History } from 'lucide-react';
+import { Menu, X, ArrowRight, Check, TrendingUp, Clock, Radar, BarChart3, Eye, Lock, Database, History, Wheat, Sprout, Droplet, Sun, FileText } from 'lucide-react';
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,7 +13,7 @@ export default function LandingPage() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
-              <div className="text-green-500 text-3xl">🌾</div>
+              <Wheat size={32} className="text-green-500" />
               <h2 className="text-lg font-bold tracking-tight">AgroPro</h2>
             </Link>
 
@@ -153,7 +153,7 @@ export default function LandingPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
-                  <p className="text-white font-bold text-sm">🌱 AgroTech</p>
+                  <p className="text-white font-bold text-sm flex items-center gap-1"><Sprout size={16} /> AgroTech</p>
                 </div>
               </div>
               <div className="relative rounded-xl overflow-hidden aspect-[4/3] group cursor-pointer">
@@ -168,7 +168,7 @@ export default function LandingPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
-                  <p className="text-white font-bold text-sm">💧 Suvarma.az</p>
+                  <p className="text-white font-bold text-sm flex items-center gap-1"><Droplet size={16} /> Suvarma.az</p>
                 </div>
               </div>
               <div className="relative rounded-xl overflow-hidden aspect-[4/3] group cursor-pointer">
@@ -183,7 +183,7 @@ export default function LandingPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
-                  <p className="text-white font-bold text-sm">🌾 GreenField</p>
+                  <p className="text-white font-bold text-sm flex items-center gap-1"><Wheat size={16} /> GreenField</p>
                 </div>
               </div>
               <div className="relative rounded-xl overflow-hidden aspect-[4/3] group cursor-pointer">
@@ -198,7 +198,7 @@ export default function LandingPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
-                  <p className="text-white font-bold text-sm">☀️ OrganicLife</p>
+                  <p className="text-white font-bold text-sm flex items-center gap-1"><Sun size={16} /> OrganicLife</p>
                 </div>
               </div>
             </div>
@@ -218,19 +218,19 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
-                  icon: "📊",
+                  icon: BarChart3,
                   title: "Sahə və Məhsul Partiyası İdarəetməsi",
                   description: "Hər bir sahənin və məhsul partiyasının statusunu real vaxt rejimində izləyin. Status tarixçəsi və məhsul dövriyyəsini asanlıqla idarə edin.",
                   image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
                 },
                 {
-                  icon: "💧",
+                  icon: Droplet,
                   title: "Hadisə əsaslı Suvarma Sistemi",
                   description: "Suvarma hadisələrini planlaşdırın və icra edin. Gecikmələri avtomatik aşkar edin və kritik vəziyyətləri izləyin.",
                   image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
                 },
                 {
-                  icon: "📝",
+                  icon: FileText,
                   title: "Qeydlər və Audit Tarixçəsi",
                   description: "Bütün əməliyyatların tam tarixçəsini saxlayın. Gübrələmə, xəstəlik, müşahidə və yığım proseslərini detallı qeyd edin.",
                   image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
@@ -248,8 +248,8 @@ export default function LandingPage() {
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
-                    <div className="absolute top-4 left-4 w-12 h-12 rounded-lg bg-slate-800/90 backdrop-blur flex items-center justify-center group-hover:bg-green-500 group-hover:text-slate-950 transition-colors text-3xl">
-                      {feature.icon}
+                    <div className="absolute top-4 left-4 w-12 h-12 rounded-lg bg-slate-800/90 backdrop-blur flex items-center justify-center group-hover:bg-green-500 group-hover:text-slate-950 transition-colors">
+                      <feature.icon size={24} />
                     </div>
                   </div>
                   <div className="p-8">
@@ -422,7 +422,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">🌾</span>
+                <Wheat size={24} />
                 <span className="font-bold text-xl">AgroPro</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
