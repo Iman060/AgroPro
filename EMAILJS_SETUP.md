@@ -37,7 +37,7 @@ Mesaj:
 {{message}}
 
 ---
-Bu mesaj AgroPro İdarəetmə Sistemi vasitəsilə göndərilmişdir.
+Bu mesaj AqroVix İdarəetmə Sistemi vasitəsilə göndərilmişdir.
 ```
 
 4. In the **To Email** field, enter: `omemmedzade@std.beu.edu.az`

@@ -14,7 +14,7 @@ export default function LandingPage() {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
               <Wheat size={32} className="text-green-500" />
-              <h2 className="text-lg font-bold tracking-tight">AgroPro</h2>
+              <h2 className="text-lg font-bold tracking-tight">AqroVix</h2>
             </Link>
 
             {/* Desktop Nav */}
@@ -423,7 +423,7 @@ export default function LandingPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Wheat size={24} />
-                <span className="font-bold text-xl">AgroPro</span>
+                <span className="font-bold text-xl">AqroVix</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
                 Kənd təsərrüfatı üçün müasir həllər. Məhsuldarlığı artırın, xərcləri azaldın.
@@ -458,7 +458,7 @@ export default function LandingPage() {
           </div>
           
           <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">© 2024 AgroPro. Bütün hüquqlar qorunur.</p>
+            <p className="text-gray-400 text-sm">© 2024 AqroVix. Bütün hüquqlar qorunur.</p>
             <div className="flex items-center gap-4">
               <span className="font-bold bg-slate-900 px-2 py-1 rounded border border-slate-800 text-sm">AZ</span>
             </div>

@@ -1,4 +1,4 @@
-# 🌾 AgroPro İdarəetmə Sistemi (Smart Farm Management System)
+# 🌾 AqroVix İdarəetmə Sistemi (Smart Farm Management System)
 
 A modern, comprehensive farm management system built with React that helps farmers efficiently manage their fields, crops, irrigation schedules, and agricultural notes from a single dashboard.
 
@@ -15,7 +15,7 @@ A modern, comprehensive farm management system built with React that helps farme
 
 ## 🎯 Overview
 
-AgroPro is a logic-heavy, event-based farm management system designed to help farmers:
+AqroVix is a logic-heavy, event-based farm management system designed to help farmers:
 
 - **Track multiple fields and crop batches** with detailed history
 - **Monitor crop health** using status history (not just current status)

@@ -186,7 +186,7 @@ function DataImportPage() {
               <Wheat size={24} />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
+              <h1 className="text-white text-lg font-bold leading-none tracking-tight">AqroVix</h1>
               <span className="text-xs text-gray-400 font-medium mt-1">Fermer İdarəetmə</span>
             </div>
           </Link>

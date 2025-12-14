@@ -1,6 +1,6 @@
 # 🛠️ Technology Stack
 
-This document describes all the technologies, libraries, and tools used in the AgroPro İdarəetmə Sistemi (Smart Farm Management System).
+This document describes all the technologies, libraries, and tools used in the AqroVix İdarəetmə Sistemi (Smart Farm Management System).
 
 ## 📦 Core Technologies
 

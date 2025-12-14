@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
-import { Menu, Search, Bell, Settings, Edit, Plus, MoreVertical, ChevronRight, TrendingUp, Archive, Clock, X, User, MapPin, Wheat, Sun, Droplet, Sprout, BarChart3, Map, FileText, Upload } from 'lucide-react';
+import { Menu, Search, Bell, Settings, Edit, Plus, MoreVertical, ChevronRight, TrendingUp, Archive, Clock, X, User, MapPin, Wheat, Sun, Droplet, Sprout, BarChart3, Map, FileText, Upload, Trash2 } from 'lucide-react';
 import { mockFields, mockCropBatches, mockStatusHistory, mockIrrigationEvents, mockNotes } from '../data/mockData';
 import { getActiveCropBatchesForField, getCurrentStatus, getIrrigationState, getActiveFields, getActiveCropBatches, countOverdueIrrigation } from '../utils/calculations';
 import JsonImport from '../components/JsonImport';
 import AddIrrigationModal from '../components/AddIrrigationModal';
 import AddStatusChangeModal from '../components/AddStatusChangeModal';
 import AddNoteModal from '../components/AddNoteModal';
+import DeleteFieldModal from '../components/DeleteFieldModal';
+import DeleteCropBatchModal from '../components/DeleteCropBatchModal';
 
 function FieldDetail() {
   const location = useLocation();
@@ -17,14 +19,25 @@ function FieldDetail() {
   const [activeModal, setActiveModal] = useState(null);
   const [modalParams, setModalParams] = useState({});
   const [showImport, setShowImport] = useState(false);
+  const [fields, setFields] = useState([...mockFields]);
+  const [cropBatchesState, setCropBatchesState] = useState([...mockCropBatches]);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [openCropMenuId, setOpenCropMenuId] = useState(null);
+  const [deleteModalField, setDeleteModalField] = useState(null);
+  const [deleteModalCropBatch, setDeleteModalCropBatch] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeletingCrop, setIsDeletingCrop] = useState(false);
+  const [showDeletedCrops, setShowDeletedCrops] = useState(false);
+  const menuRef = useRef(null);
+  const cropMenuRefs = useRef({});
 
-  const activeFields = getActiveFields(mockFields);
-  const activeCropBatches = getActiveCropBatches(mockCropBatches);
+  const activeFields = fields.filter(f => !f.archived);
+  const activeCropBatches = getActiveCropBatches(cropBatchesState);
   const overdueCount = countOverdueIrrigation(activeCropBatches, mockIrrigationEvents);
   const fieldId = searchParams.get('fieldId') || activeFields[0]?.id;
-  const field = activeFields.find(f => f.id === fieldId);
-  const cropBatches = fieldId ? getActiveCropBatchesForField(fieldId, mockCropBatches) : [];
-  const archivedBatches = fieldId ? mockCropBatches.filter(b => b.fieldId === fieldId && b.archived) : [];
+  const field = activeFields.find(f => f.id === fieldId) || fields.find(f => f.id === fieldId);
+  const cropBatches = fieldId ? getActiveCropBatchesForField(fieldId, cropBatchesState) : [];
+  const archivedBatches = fieldId ? cropBatchesState.filter(b => b.fieldId === fieldId && b.archived) : [];
 
   // Set default fieldId if not in URL
   useEffect(() => {
@@ -32,6 +45,73 @@ function FieldDetail() {
       setSearchParams({ fieldId: activeFields[0].id });
     }
   }, [searchParams, activeFields, setSearchParams]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenMenuId(null);
+      }
+      
+      // Close crop menus
+      Object.entries(cropMenuRefs.current).forEach(([cropId, ref]) => {
+        if (ref && !ref.contains(event.target)) {
+          setOpenCropMenuId(null);
+        }
+      });
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleMenuClick = (e) => {
+    e.stopPropagation();
+    setOpenMenuId(openMenuId === 'field-menu' ? null : 'field-menu');
+  };
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation();
+    setOpenMenuId(null);
+    if (field) {
+      setDeleteModalField(field);
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteModalField) return;
+    
+    setIsDeleting(true);
+    
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Archive the field
+    setFields(prevFields => 
+      prevFields.map(f => 
+        f.id === deleteModalField.id
+          ? { ...f, archived: true, archivedAt: new Date().toISOString() }
+          : f
+      )
+    );
+    
+    setIsDeleting(false);
+    setDeleteModalField(null);
+    
+    // Redirect to dashboard or first available field
+    const updatedFields = fields.map(f => 
+      f.id === deleteModalField.id
+        ? { ...f, archived: true, archivedAt: new Date().toISOString() }
+        : f
+    );
+    const remainingActiveFields = updatedFields.filter(f => !f.archived);
+    
+    if (remainingActiveFields.length > 0) {
+      navigate(`/fields?fieldId=${remainingActiveFields[0].id}`);
+    } else {
+      navigate('/dashboard');
+    }
+  };
 
   const handleFieldSelect = (selectedFieldId) => {
     setSearchParams({ fieldId: selectedFieldId });
@@ -148,11 +228,15 @@ function FieldDetail() {
   const archivedCrops = archivedBatches.map(batch => {
     const harvestDate = new Date(batch.plantedDate);
     harvestDate.setDate(harvestDate.getDate() + 90);
+    const deletedDate = batch.archivedAt ? new Date(batch.archivedAt) : null;
     return {
       id: batch.id,
-      name: `${batch.cropType} (${new Date(batch.plantedDate).getFullYear()} Mövsümü)`,
-      date: `Yığım tarixi: ${harvestDate.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })}`,
-      icon: Wheat
+      name: batch.cropType,
+      date: deletedDate 
+        ? `Silinmə tarixi: ${deletedDate.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })}`
+        : `Yığım tarixi: ${harvestDate.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })}`,
+      icon: Wheat,
+      deletedAt: batch.archivedAt
     };
   });
 
@@ -225,6 +309,50 @@ function FieldDetail() {
     setModalParams({});
   };
 
+  const handleCloseDeleteModal = () => {
+    if (!isDeleting) {
+      setDeleteModalField(null);
+    }
+  };
+
+  const handleCropMenuClick = (cropId, e) => {
+    e.stopPropagation();
+    setOpenCropMenuId(openCropMenuId === cropId ? null : cropId);
+  };
+
+  const handleDeleteCropClick = (crop, e) => {
+    e.stopPropagation();
+    setOpenCropMenuId(null);
+    setDeleteModalCropBatch(crop);
+  };
+
+  const handleDeleteCropConfirm = async () => {
+    if (!deleteModalCropBatch) return;
+    
+    setIsDeletingCrop(true);
+    
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Archive the crop batch
+    setCropBatchesState(prevBatches => 
+      prevBatches.map(batch => 
+        batch.id === deleteModalCropBatch.id
+          ? { ...batch, archived: true, archivedAt: new Date().toISOString() }
+          : batch
+      )
+    );
+    
+    setIsDeletingCrop(false);
+    setDeleteModalCropBatch(null);
+  };
+
+  const handleCloseDeleteCropModal = () => {
+    if (!isDeletingCrop) {
+      setDeleteModalCropBatch(null);
+    }
+  };
+
   const handleSave = async (data) => {
     // In a real app, this would save to backend
     console.log('Saving:', data);
@@ -253,7 +381,7 @@ function FieldDetail() {
               <Wheat size={24} />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
+              <h1 className="text-white text-lg font-bold leading-none tracking-tight">AqroVix</h1>
               <span className="text-xs text-gray-400 font-medium mt-1">Fermer İdarəetmə</span>
             </div>
           </Link>
@@ -301,6 +429,23 @@ function FieldDetail() {
                       ? 'bg-[#46ec13]/30 text-[#46ec13] font-bold'
                       : 'text-gray-400 hover:text-white hover:bg-[#24381e]'
                   }`}
+                >
+                  {f.name}
+                </button>
+              ))}
+            </div>
+          )}
+          
+          {/* Archived Fields Section */}
+          {fields.filter(f => f.archived).length > 0 && (
+            <div className="ml-3 mt-4 pt-4 border-t border-[#24381e]">
+              <p className="text-gray-500 text-xs font-medium mb-2 px-3">Silinmiş Sahələr</p>
+              {fields.filter(f => f.archived).map(f => (
+                <button
+                  key={f.id}
+                  onClick={() => handleFieldSelect(f.id)}
+                  className="w-full text-left px-3 py-1.5 rounded text-xs transition-colors text-gray-500 hover:text-gray-400 hover:bg-[#24381e] opacity-60"
+                  disabled
                 >
                   {f.name}
                 </button>
@@ -476,6 +621,31 @@ function FieldDetail() {
                   <Plus size={20} />
                   <span>Yeni Fəaliyyət</span>
                 </button>
+                {/* 3-dot Menu */}
+                <div className="relative" ref={menuRef}>
+                  <button
+                    onClick={handleMenuClick}
+                    className="flex items-center justify-center h-10 w-10 rounded-lg bg-[#1c2e18] hover:bg-[#3a4b35] text-white transition-colors"
+                  >
+                    <MoreVertical size={20} />
+                  </button>
+                  
+                  {/* Dropdown Menu */}
+                  {openMenuId === 'field-menu' && (
+                    <div
+                      className="absolute right-0 top-12 bg-[#24381e] border border-white/10 rounded-lg shadow-xl z-50 min-w-[180px] overflow-hidden"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <button
+                        onClick={handleDeleteClick}
+                        className="w-full px-4 py-3 text-left text-red-400 hover:bg-red-500/10 transition-colors flex items-center gap-2"
+                      >
+                        <Trash2 size={18} />
+                        <span>Sahəni Sil</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -519,9 +689,31 @@ function FieldDetail() {
                   {activeCrops.length > 0 ? (
                     activeCrops.map((crop, idx) => (
                       <div key={crop.id} className="bg-[#1c2e17] border border-white/5 rounded-2xl p-6 flex flex-col sm:flex-row gap-6 relative overflow-hidden group hover:border-[#46ec13]/40 transition-colors">
-                        <button className="absolute top-3 right-3 p-1 hover:bg-white/10 rounded text-[#a3b99d] hover:text-white transition-colors">
-                          <MoreVertical size={20} />
-                        </button>
+                        {/* 3-dot Menu for Crop */}
+                        <div className="absolute top-3 right-3" ref={el => cropMenuRefs.current[crop.id] = el}>
+                          <button
+                            onClick={(e) => handleCropMenuClick(crop.id, e)}
+                            className="p-1 hover:bg-white/10 rounded text-[#a3b99d] hover:text-white transition-colors"
+                          >
+                            <MoreVertical size={20} />
+                          </button>
+                          
+                          {/* Dropdown Menu */}
+                          {openCropMenuId === crop.id && (
+                            <div
+                              className="absolute right-0 top-8 bg-[#24381e] border border-white/10 rounded-lg shadow-xl z-50 min-w-[180px] overflow-hidden"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <button
+                                onClick={(e) => handleDeleteCropClick(crop, e)}
+                                className="w-full px-4 py-3 text-left text-red-400 hover:bg-red-500/10 transition-colors flex items-center gap-2"
+                              >
+                                <Trash2 size={18} />
+                                <span>Məhsulu Sil</span>
+                              </button>
+                            </div>
+                          )}
+                        </div>
                         
                         <div 
                           className="w-full sm:w-32 h-32 rounded-lg bg-cover bg-center shrink-0"
@@ -596,40 +788,57 @@ function FieldDetail() {
                   )}
                 </section>
 
-                {/* Archived Crops */}
+                {/* Deleted/Archived Crops */}
                 {archivedCrops.length > 0 && (
                   <section className="flex flex-col gap-4 pt-6 border-t border-[#2c3928]">
                     <div className="flex items-center justify-between">
                       <h3 className="text-[#a3b99d] text-xl font-bold flex items-center gap-2">
                         <Archive size={24} />
-                        Arxiv
+                        Silinmiş Məhsullar
                       </h3>
+                      <button
+                        onClick={() => setShowDeletedCrops(!showDeletedCrops)}
+                        className="text-[#46ec13] text-sm font-medium hover:underline"
+                      >
+                        {showDeletedCrops ? 'Gizlət' : 'Göstər'}
+                      </button>
                     </div>
                     
-                    <div className="flex flex-col gap-2">
-                      {archivedCrops.map((crop) => (
-                        <div 
-                          key={crop.id} 
-                          className="flex items-center justify-between p-4 rounded-lg bg-[#1a241b] border border-[#2c3928]/50 hover:bg-[#233025] transition-colors cursor-pointer"
-                        >
-                          <div className="flex items-center gap-4">
-                            <div className="h-10 w-10 rounded bg-[#2c3928] flex items-center justify-center">
-                              {crop.icon && <crop.icon size={20} />}
+                    {showDeletedCrops && (
+                      <div className="flex flex-col gap-2">
+                        {archivedCrops.map((crop) => (
+                          <div 
+                            key={crop.id} 
+                            className="flex items-center justify-between p-4 rounded-lg bg-[#1a241b] border border-[#2c3928]/50 hover:bg-[#233025] transition-colors cursor-pointer opacity-70"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="h-10 w-10 rounded bg-[#2c3928] flex items-center justify-center">
+                                {crop.icon && <crop.icon size={20} />}
+                              </div>
+                              <div>
+                                <p className="text-gray-300 font-medium">{crop.name}</p>
+                                <p className="text-gray-500 text-xs">{crop.date}</p>
+                              </div>
                             </div>
-                            <div>
-                              <p className="text-gray-300 font-medium">{crop.name}</p>
-                              <p className="text-gray-500 text-xs">{crop.date}</p>
+                            <div className="flex items-center gap-4">
+                              <span className="px-2 py-1 rounded text-xs font-medium bg-red-500/20 text-red-400 border border-red-500/30">
+                                Silinib
+                              </span>
+                              <ChevronRight size={20} className="text-gray-600" />
                             </div>
                           </div>
-                          <div className="flex items-center gap-4">
-                            <span className="px-2 py-1 rounded text-xs font-medium bg-gray-800 text-gray-400">
-                              Yekunlaşıb
-                            </span>
-                            <ChevronRight size={20} className="text-gray-600" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {!showDeletedCrops && archivedCrops.length > 0 && (
+                      <button
+                        onClick={() => setShowDeletedCrops(true)}
+                        className="w-full py-3 px-4 rounded-lg bg-[#1a241b] border border-[#2c3928]/50 hover:bg-[#233025] transition-colors text-[#46ec13] text-sm font-medium"
+                      >
+                        {archivedCrops.length} silinmiş məhsul göstər
+                      </button>
+                    )}
                   </section>
                 )}
               </div>
@@ -740,6 +949,26 @@ function FieldDetail() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Delete Field Modal */}
+      {deleteModalField && (
+        <DeleteFieldModal
+          field={deleteModalField}
+          onClose={handleCloseDeleteModal}
+          onDelete={handleDeleteConfirm}
+          isDeleting={isDeleting}
+        />
+      )}
+
+      {/* Delete Crop Batch Modal */}
+      {deleteModalCropBatch && (
+        <DeleteCropBatchModal
+          cropBatch={deleteModalCropBatch}
+          onClose={handleCloseDeleteCropModal}
+          onDelete={handleDeleteCropConfirm}
+          isDeleting={isDeletingCrop}
+        />
       )}
     </div>
   );

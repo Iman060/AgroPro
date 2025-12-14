@@ -9,7 +9,7 @@ function MainLayout() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/profile" className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent hover:opacity-80 transition-opacity">
-              🌾 AgroPro
+              🌾 AqroVix
             </Link>
             <div className="flex items-center gap-3">
               <div className="flex gap-1 bg-slate-800 p-1 rounded-lg">

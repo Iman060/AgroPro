@@ -14,7 +14,7 @@ function ProfilePage() {
   const [formData, setFormData] = useState({
     fullName: 'Elçin Məmmədov',
     phone: '+994 50 123 45 67',
-    email: 'elcin.m@agropro.az',
+    email: 'elcin.m@aqrovix.az',
     timezone: 'GMT+04:00',
     language: 'az'
   });
@@ -67,7 +67,7 @@ function ProfilePage() {
               <Wheat size={24} />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-white text-lg font-bold leading-none tracking-tight">AgroPro</h1>
+              <h1 className="text-white text-lg font-bold leading-none tracking-tight">AqroVix</h1>
               <span className="text-xs text-gray-400 font-medium mt-1">Fermer İdarəetmə</span>
             </div>
           </Link>

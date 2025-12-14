@@ -33,6 +33,7 @@ export const router = createBrowserRouter(
       {/* Pages with their own full-screen layouts */}
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="fields" element={<FieldDetail />} />
+      <Route path="fields-list" element={<FieldsPage />} />
       <Route path="crop-batches" element={<CropBatchesPage />} />
       <Route path="irrigation" element={<IrrigationPage />} />
       <Route path="notes" element={<NotesPage />} />
